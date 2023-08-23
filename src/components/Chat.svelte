@@ -2,9 +2,11 @@
   import { onMount, onDestroy } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
 
-  let newMessage: String;
+  let newMessage: string = '';
   let messages: any[] = [];
   let unsubscribe: () => void;
+
+  let messageContainer: HTMLElement | null = null;
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
@@ -12,39 +14,46 @@
       expand: 'user',
     });
     messages = resultList.items;
-    unsubscribe = await pb
-      .collection('messages')
-      .subscribe('*', async ({ action, record }: any) => {
-        if (action === 'create') {
-          const user = await pb.collection('users').getOne(record.user);
-          record.expand = { user };
-          messages = [...messages, record];
-        }
-        if (action === 'delete') {
-          messages = messages.filter((m) => m.id !== record.id);
-        }
-      });
+    unsubscribe = await pb.collection('messages').subscribe('*', async ({ action, record }: any) => {
+      if (action === 'create') {
+        const user = await pb.collection('users').getOne(record.user);
+        record.expand = { user };
+        messages = [...messages, record];
+        scrollToBottom();
+      }
+      if (action === 'delete') {
+        messages = messages.filter((m) => m.id !== record.id);
+      }
+    });
+    scrollToBottom();
   });
 
   onDestroy(() => {
     unsubscribe?.();
   });
+
+  function scrollToBottom() {
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  }
+
   async function sendMessage() {
-    if ($currentUser)
-    {
+    if ($currentUser) {
       const data = {
         text: newMessage,
         user: $currentUser.id,
       };
       const createdMessage = await pb.collection('messages').create(data);
       newMessage = '';
+      scrollToBottom();
     } else {
-      console.error("User not found please login or sign up");
+      console.error('User not found. Please login or sign up.');
     }
   }
 </script>
 
-<div class="messages">
+<div class="messages" bind:this={messageContainer}>
   {#each messages as message (message.id)}
     <div class="msg">
       <img

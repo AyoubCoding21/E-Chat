@@ -33,7 +33,7 @@
   });
 
   function scrollToLastMessage() {
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    scrollToBottom(messagesContainer);
   }
 
   async function sendMessage() {

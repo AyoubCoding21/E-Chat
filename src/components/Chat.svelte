@@ -43,7 +43,7 @@
   }
 </script>
 
-<div class="messages" bind:this={messagesContainer}>
+<div class="messages">
   {#each messages as message (message.id)}
     <div class="msg">
       <img

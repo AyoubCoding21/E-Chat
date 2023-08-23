@@ -4,9 +4,8 @@
 
   let newMessage: string;
   let messages: any[] = [];
+  let messagesContainer: HTMLDivElement;
   let unsubscribe: () => void;
-
-  const messagesContainer = null;
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
@@ -14,20 +13,17 @@
       expand: 'user',
     });
     messages = resultList.items;
-    unsubscribe = await pb
-      .collection('messages')
-      .subscribe('*', async ({ action, record }: any) => {
-        if (action === 'create') {
-          const user = await pb.collection('users').getOne(record.user);
-          record.expand = { user };
-          messages = [...messages, record];
-          scrollToBottom();
-        }
-        if (action === 'delete') {
-          messages = messages.filter((m) => m.id !== record.id);
-        }
-      });
-    scrollToBottom();
+    unsubscribe = await pb.collection('messages').subscribe('*', async ({ action, record }: any) => {
+      if (action === 'create') {
+        const user = await pb.collection('users').getOne(record.user);
+        record.expand = { user };
+        messages = [...messages, record];
+        scrollMessagesToBottom();
+      }
+      if (action === 'delete') {
+        messages = messages.filter((m) => m.id !== record.id);
+      }
+    });
   });
 
   onDestroy(() => {
@@ -42,16 +38,13 @@
       };
       const createdMessage = await pb.collection('messages').create(data);
       newMessage = '';
-      scrollToBottom();
     } else {
-      console.error('User not found please login or sign up');
+      console.error("User not found, please login or sign up");
     }
   }
 
-  function scrollToBottom() {
-    if (messagesContainer) {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
+  function scrollMessagesToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 </script>
 

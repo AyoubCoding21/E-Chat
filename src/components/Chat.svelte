@@ -98,6 +98,8 @@
     flex-direction: column;
     align-items: flex-start;
     margin-top: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .msg {

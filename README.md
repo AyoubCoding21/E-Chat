@@ -1,6 +1,6 @@
 # E-Chat
 
-E-Chat is a Pocketbase + Svelte + TypeScript chat app hosted by PocketHost in the cloud. I call this stack, The Stock stack.
+E-Chat is a Pocketbase + Svelte + TypeScript chat app hosted by PocketHost in the cloud. I call this stack, The Pstock stack.
 
 **What is PocketBase :**
 

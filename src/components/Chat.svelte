@@ -2,11 +2,11 @@
   import { onMount, onDestroy } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
 
-  let newMessage: string = '';
+  let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
 
-  let messageContainer: HTMLElement | null = null;
+  const messagesContainer = null;
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
@@ -14,29 +14,25 @@
       expand: 'user',
     });
     messages = resultList.items;
-    unsubscribe = await pb.collection('messages').subscribe('*', async ({ action, record }: any) => {
-      if (action === 'create') {
-        const user = await pb.collection('users').getOne(record.user);
-        record.expand = { user };
-        messages = [...messages, record];
-        scrollToBottom();
-      }
-      if (action === 'delete') {
-        messages = messages.filter((m) => m.id !== record.id);
-      }
-    });
+    unsubscribe = await pb
+      .collection('messages')
+      .subscribe('*', async ({ action, record }: any) => {
+        if (action === 'create') {
+          const user = await pb.collection('users').getOne(record.user);
+          record.expand = { user };
+          messages = [...messages, record];
+          scrollToBottom();
+        }
+        if (action === 'delete') {
+          messages = messages.filter((m) => m.id !== record.id);
+        }
+      });
     scrollToBottom();
   });
 
   onDestroy(() => {
     unsubscribe?.();
   });
-
-  function scrollToBottom() {
-    if (messageContainer) {
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-  }
 
   async function sendMessage() {
     if ($currentUser) {
@@ -48,12 +44,18 @@
       newMessage = '';
       scrollToBottom();
     } else {
-      console.error('User not found. Please login or sign up.');
+      console.error('User not found please login or sign up');
+    }
+  }
+
+  function scrollToBottom() {
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
   }
 </script>
 
-<div class="messages" bind:this={messageContainer}>
+<div class="messages" bind:this={messagesContainer}>
   {#each messages as message (message.id)}
     <div class="msg">
       <img
@@ -80,7 +82,7 @@
 <style>
   /* Montserrat Font */
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
-  
+
   /* Global Styles */
   :global(body) {
     font-family: 'Montserrat', sans-serif;
@@ -96,6 +98,8 @@
     flex-direction: column;
     align-items: flex-start;
     margin-top: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px); /* Adjust the value as needed */
   }
 
   .msg {

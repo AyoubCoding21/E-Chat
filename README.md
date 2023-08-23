@@ -6,7 +6,7 @@ E-Chat is a Pocketbase + Svelte + TypeScript chat app hosted by PocketHost in th
 
 Pocketbase is ultimatly the fastest, easiest way to build a database, It uses SQLite in the back-end, and with it's cool built-with-Svelte admin dashboard, It's really easy to create a database in seconds (*not sponsored*)
 
-You're gonna tell me : *Ayo bro, there is Firebase with the same advantages, Why the hell don't you just go Firebase*
+You're gonna tell me : *Ayo bro, there is Firebase with the same advantages, Why the hell don't you just go Firebase ?*
 
 I tried but Firebase got always these SDK issues and modelling the db is kinda hard, also when I try to write the code for it and I get errors.
 

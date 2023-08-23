@@ -78,7 +78,7 @@ So to finish, **follow the rules** mentionned in the chat-room or you will be ba
 
 Any issues or pull requests accepted greatfully !
 
-I will create
+I will create a SvelteKit version of this app so follow me if you wanna see it.
 
 Donation:
 

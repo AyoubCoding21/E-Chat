@@ -17,7 +17,6 @@
         const user = await pb.collection('users').getOne(record.user);
         record.expand = { user };
         messages = [...messages, record];
-        scrollToBottom();
       }
       if (action === 'delete') {
         messages = messages.filter((m) => m.id !== record.id);

@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { onMount, onDestroy, afterUpdate } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
 
   let newMessage: String;
@@ -20,6 +20,7 @@
           const user = await pb.collection('users').getOne(record.user);
           record.expand = { user };
           messages = [...messages, record];
+          scrollToLastMessage();
         }
         if (action === 'delete') {
           messages = messages.filter((m) => m.id !== record.id);
@@ -31,18 +32,13 @@
     unsubscribe?.();
   });
 
-  afterUpdate(() => {
-    scrollToLastMessage();
-  });
-
   function scrollToLastMessage() {
-    if (messagesContainer) {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
   async function sendMessage() {
-    if ($currentUser) {
+    if ($currentUser)
+    {
       const data = {
         text: newMessage,
         user: $currentUser.id,

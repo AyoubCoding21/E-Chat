@@ -93,7 +93,7 @@
     margin-top: 20px;
     overflow-y: auto;
     max-height: calc(100vh - 200px); /* Adjust the value as needed */
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   .msg {

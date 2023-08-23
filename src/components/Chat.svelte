@@ -4,7 +4,7 @@
 
   let newMessage: String;
   let messages: any[] = [];
-  let lastMessageRef: HTMLDivElement; // Reference to the last message element
+  let messagesContainer: HTMLDivElement; 
   let unsubscribe: () => void;
 
   onMount(async () => {
@@ -33,7 +33,7 @@
   });
 
   function scrollToLastMessage() {
-    lastMessageRef?.scrollIntoView({ behavior: 'smooth' });
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
   async function sendMessage() {
@@ -51,9 +51,9 @@
   }
 </script>
 
-<div class="messages">
+<div class="messages" bind:this={messagesContainer}>
   {#each messages as message (message.id)}
-    <div class="msg" bind:this={lastMessageRef}>
+    <div class="msg">
       <img
         class="avatar"
         src={`https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`}

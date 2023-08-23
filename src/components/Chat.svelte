@@ -5,7 +5,6 @@
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
-  let messagesContainer: HTMLDivElement;
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
@@ -24,20 +23,11 @@
         messages = messages.filter((m) => m.id !== record.id);
       }
     });
-    afterUpdate(() => {
-      scrollToBottom();
-    });
   });
 
   onDestroy(() => {
     unsubscribe?.();
   });
-
-  function scrollToBottom() {
-    if (messagesContainer) {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-  }
 
   async function sendMessage() {
     if ($currentUser) {
@@ -127,14 +117,6 @@
   .msg-text {
     margin-top: 5px;
     font-size: 16px;
-  }
-
-  .form-container {
-    position: sticky;
-    bottom: 0;
-    background-color: #000;
-    padding: 10px;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   }
 
   /* HTML element styles */

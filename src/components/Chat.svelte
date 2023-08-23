@@ -1,11 +1,11 @@
 <script lang='ts'>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, afterUpdate } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
 
-  let newMessage: String;
+  let newMessage: string;
   let messages: any[] = [];
-  let messagesContainer: HTMLDivElement; // Reference to the messages container
   let unsubscribe: () => void;
+  let messagesContainer: HTMLElement;
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
@@ -13,32 +13,34 @@
       expand: 'user',
     });
     messages = resultList.items;
-    unsubscribe = await pb
-      .collection('messages')
-      .subscribe('*', async ({ action, record }: any) => {
-        if (action === 'create') {
-          const user = await pb.collection('users').getOne(record.user);
-          record.expand = { user };
-          messages = [...messages, record];
-          scrollToLastMessage();
-        }
-        if (action === 'delete') {
-          messages = messages.filter((m) => m.id !== record.id);
-        }
-      });
+    unsubscribe = await pb.collection('messages').subscribe('*', async ({ action, record }: any) => {
+      if (action === 'create') {
+        const user = await pb.collection('users').getOne(record.user);
+        record.expand = { user };
+        messages = [...messages, record];
+        scrollToBottom();
+      }
+      if (action === 'delete') {
+        messages = messages.filter((m) => m.id !== record.id);
+      }
+    });
+    afterUpdate(() => {
+      scrollToBottom();
+    });
   });
 
   onDestroy(() => {
     unsubscribe?.();
   });
 
-  function scrollToLastMessage() {
-    scrollToBottom(messagesContainer);
+  function scrollToBottom() {
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
   }
 
   async function sendMessage() {
-    if ($currentUser)
-    {
+    if ($currentUser) {
       const data = {
         text: newMessage,
         user: $currentUser.id,
@@ -46,7 +48,7 @@
       const createdMessage = await pb.collection('messages').create(data);
       newMessage = '';
     } else {
-      console.error("User not found please login or sign up");
+      console.error('User not found please login or sign up');
     }
   }
 </script>
@@ -61,19 +63,19 @@
         width="40px"
       />
       <div>
-        <small>
-          Sent by @{message.expand?.user?.username}
-        </small>
+        <small>Sent by @{message.expand?.user?.username}</small>
         <p class="msg-text">{message.text}</p>
       </div>
     </div>
   {/each}
 </div>
 
-<form on:submit|preventDefault={sendMessage}>
-  <input placeholder="Message" type="text" bind:value={newMessage} />
-  <button type="submit">Send</button>
-</form>
+<div class="form-container">
+  <form on:submit|preventDefault={sendMessage}>
+    <input placeholder="Message" type="text" bind:value={newMessage} />
+    <button type="submit">Send</button>
+  </form>
+</div>
 
 <style>
   /* Montserrat Font */
@@ -125,6 +127,14 @@
   .msg-text {
     margin-top: 5px;
     font-size: 16px;
+  }
+
+  .form-container {
+    position: sticky;
+    bottom: 0;
+    background-color: #000;
+    padding: 10px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   }
 
   /* HTML element styles */

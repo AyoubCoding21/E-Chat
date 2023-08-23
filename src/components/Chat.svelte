@@ -2,9 +2,9 @@
   import { onMount, onDestroy } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
 
-  let newMessage: string;
+  let newMessage: String;
   let messages: any[] = [];
-  let messagesContainer: HTMLDivElement;
+  let lastMessageRef: HTMLDivElement; // Reference to the last message element
   let unsubscribe: () => void;
 
   onMount(async () => {
@@ -13,25 +13,32 @@
       expand: 'user',
     });
     messages = resultList.items;
-    unsubscribe = await pb.collection('messages').subscribe('*', async ({ action, record }: any) => {
-      if (action === 'create') {
-        const user = await pb.collection('users').getOne(record.user);
-        record.expand = { user };
-        messages = [...messages, record];
-        scrollMessagesToBottom();
-      }
-      if (action === 'delete') {
-        messages = messages.filter((m) => m.id !== record.id);
-      }
-    });
+    unsubscribe = await pb
+      .collection('messages')
+      .subscribe('*', async ({ action, record }: any) => {
+        if (action === 'create') {
+          const user = await pb.collection('users').getOne(record.user);
+          record.expand = { user };
+          messages = [...messages, record];
+          scrollToLastMessage();
+        }
+        if (action === 'delete') {
+          messages = messages.filter((m) => m.id !== record.id);
+        }
+      });
   });
 
   onDestroy(() => {
     unsubscribe?.();
   });
 
+  function scrollToLastMessage() {
+    lastMessageRef?.scrollIntoView({ behavior: 'smooth' });
+  }
+
   async function sendMessage() {
-    if ($currentUser) {
+    if ($currentUser)
+    {
       const data = {
         text: newMessage,
         user: $currentUser.id,
@@ -39,18 +46,14 @@
       const createdMessage = await pb.collection('messages').create(data);
       newMessage = '';
     } else {
-      console.error("User not found, please login or sign up");
+      console.error("User not found please login or sign up");
     }
-  }
-
-  function scrollMessagesToBottom() {
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 </script>
 
-<div class="messages" bind:this={messagesContainer}>
+<div class="messages">
   {#each messages as message (message.id)}
-    <div class="msg">
+    <div class="msg" bind:this={lastMessageRef}>
       <img
         class="avatar"
         src={`https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`}
@@ -71,7 +74,6 @@
   <input placeholder="Message" type="text" bind:value={newMessage} />
   <button type="submit">Send</button>
 </form>
-
 <style>
   /* Montserrat Font */
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');

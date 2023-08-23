@@ -16,7 +16,7 @@ An issue that I faced while making this project is hosting, with so many paid pl
 
 **How to execute the project :**
 
-The project is already hosted on Vercel : [https://e-chat-ten.vercel.app]
+The project is already hosted on Vercel : https://e-chat-ten.vercel.app
 
 But If you want to build it or run the dev server (so you can create an instance of the app for like a local chat-room), Here is how you can do it.
 

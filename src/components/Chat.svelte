@@ -5,7 +5,7 @@
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
-  let messagesContainer: HTMLElement;
+  let messagesContainer: HTMLDivElement;
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {

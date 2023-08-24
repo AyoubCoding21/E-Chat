@@ -71,12 +71,10 @@
   {/each}
 </div>
 
-<div class="form-container">
-  <form on:submit|preventDefault={sendMessage}>
+<form on:submit|preventDefault={sendMessage}>
     <input placeholder="Message" type="text" bind:value={newMessage} />
     <button type="submit">Send</button>
-  </form>
-</div>
+</form>
 
 <style>
   /* Montserrat Font */
@@ -153,7 +151,6 @@
     color: #fff;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
     transition: background-color 0.3s ease-in-out;
     font-family: 'Montserrat';
   }

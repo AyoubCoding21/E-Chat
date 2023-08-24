@@ -4,7 +4,7 @@
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
-	const scrollToBottom = node => {
+  const scrollToBottom = node => {
 		const scroll = () => node.scroll({
 			top: node.scrollHeight,
 			behavior: 'smooth',
@@ -12,7 +12,7 @@
 		scroll();
 
 		return { update: scroll }
-	};
+  };
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
       sort: 'created',

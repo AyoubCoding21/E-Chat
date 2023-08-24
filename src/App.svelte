@@ -2,9 +2,6 @@
     import Register from "./components/Register.svelte";
     import Chat from "./components/Chat.svelte";
     import { currentUser } from "./lib/pocketbase-config";
-    let scrollToBottom = async (node) => {
-        node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
-    }; 
 </script>
 
 <body>
@@ -12,7 +9,7 @@
     <Register />
 
     {#if $currentUser}
-      <Chat on:sent-message={scrollToBottom} />
+      <Chat />
     {/if}
 </body>
 

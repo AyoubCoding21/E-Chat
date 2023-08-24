@@ -4,6 +4,7 @@
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
+  let messagesContainer: HTMLDivElement = null;
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
       sort: 'created',
@@ -22,6 +23,10 @@
     });
   });
 
+  const scrollToBottom = async (node) => {
+    node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
+  }; 
+
   onDestroy(() => {
     unsubscribe?.();
   });
@@ -37,6 +42,15 @@
     } else {
       console.error('User not found please login or sign up');
     }
+  }
+
+  afterUpdate(() => {
+        if (messages) window.scrollTo(0, document.body.scrollHeight)
+  });
+
+  $: if(message && messagesContainer)
+  {
+    	scrollToBottom(element);
   }
 </script>
 
@@ -58,7 +72,7 @@
 </div>
 
 <div class="form-container">
-  <form on:submit|preventDefault={sendMessage} on:submit={() => window.scrollTo(0, document.body.scrollHeight)}>
+  <form on:submit|preventDefault={sendMessage}>
     <input placeholder="Message" type="text" bind:value={newMessage} />
     <button type="submit">Send</button>
   </form>

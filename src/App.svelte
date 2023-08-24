@@ -4,13 +4,14 @@
     import { currentUser } from "./lib/pocketbase-config";
 </script>
 
-<h1>E-Chat</h1>
+<body>
+    <h1>E-Chat</h1>
+    <Register />
 
-<Register />
-
-{#if $currentUser}
-  <Chat />
-{/if}
+    {#if $currentUser}
+      <Chat />
+    {/if}
+</body>
 
 <style>
     h1

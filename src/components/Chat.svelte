@@ -48,13 +48,13 @@
         if (messages) window.scrollTo(0, document.body.scrollHeight)
   });
 
-  $: if(message && messagesContainer)
+  $: if(messages && messagesContainer)
   {
-    	scrollToBottom(element);
+    	scrollToBottom(messagesContainer);
   }
 </script>
 
-<div class="messages">
+<div class="messages" bind:this={messagesContainer}>
   {#each messages as message (message.id)}
     <div class="msg">
       <img

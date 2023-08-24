@@ -4,6 +4,7 @@
 
   let username: string;
   let password: string;
+  let email: string;
 
   async function login() {
     const user = await pb.collection('users').authWithPassword(username, password);
@@ -14,6 +15,7 @@
     try {
       const data = {
         username,
+        email,
         password,
         passwordConfirm: password,
         name: 'user',
@@ -109,13 +111,20 @@
   >
     <input
       placeholder="Username"
+      required
       type="text"
       bind:value={username}
     />
-
+    <input
+      placeholder="E-Mail"
+      required
+      type="email"
+      bind:value={email}
+    />
     <input 
       placeholder="Password" 
       type="password" 
+      required
       bind:value={password} 
     />
     <button on:click={signUp}>Sign Up</button>

@@ -40,7 +40,7 @@
   }
 </script>
 
-<div class="messages" autoscroll={true}>
+<div class="messages" items={messages} bind:start bind:end let:item autoscroll={true}>
   {#each messages as message (message.id)}
     <div class="msg">
       <img

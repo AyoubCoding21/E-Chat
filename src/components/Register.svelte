@@ -79,7 +79,7 @@
   button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #ff4401;
+    background-color: #ffa401;
     color: #ffe;
     border: none;
     border-radius: 5px;

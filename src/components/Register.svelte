@@ -63,7 +63,8 @@
   }
 
   input[type="text"],
-  input[type="password"] {
+  input[type="password"],
+  input[type="email"] {
     display: block;
     width: 100%;
     padding: 9px;

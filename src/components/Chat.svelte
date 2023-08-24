@@ -4,15 +4,6 @@
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
-  const scrollToBottom = node => {
-		const scroll = () => node.scroll({
-			top: node.scrollHeight,
-			behavior: 'smooth',
-		});
-		scroll();
-
-		return { update: scroll }
-  };
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
       sort: 'created',
@@ -49,7 +40,7 @@
   }
 </script>
 
-<div class="messages" use:scrollToBottom={messages}>
+<div class="messages" autoscroll={true}>
   {#each messages as message (message.id)}
     <div class="msg">
       <img

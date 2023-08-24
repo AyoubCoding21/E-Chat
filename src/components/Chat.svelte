@@ -35,7 +35,7 @@
         user: $currentUser.id,
       };
       const createdMessage = await pb.collection('messages').create(data);
-      dispatch('messageAdded');
+      $scrollToBottom();
       newMessage = '';
     } else {
       console.error('User not found please login or sign up');

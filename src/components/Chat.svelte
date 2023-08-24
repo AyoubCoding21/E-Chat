@@ -1,7 +1,9 @@
 <script lang='ts'>
   import { onMount, onDestroy, afterUpdate } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
-  export let scrollToBottom;
+  export const scrollToBottom = async (node) => {
+    node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
+  }; 
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;

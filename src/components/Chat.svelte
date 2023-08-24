@@ -1,7 +1,7 @@
 <script lang='ts'>
   import { onMount, onDestroy, afterUpdate } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
-
+  export let scrollToBottom;
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;

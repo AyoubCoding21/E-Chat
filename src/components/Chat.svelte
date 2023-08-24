@@ -34,7 +34,6 @@
       };
       const createdMessage = await pb.collection('messages').create(data);
       newMessage = '';
-      window.scrollTo(0, document.body.scrollHeight);
     } else {
       console.error('User not found please login or sign up');
     }
@@ -59,7 +58,7 @@
 </div>
 
 <div class="form-container">
-  <form on:submit|preventDefault={sendMessage}>
+  <form on:submit|preventDefault={sendMessage} on:submit={() => window.scrollTo(0, document.body.scrollHeight)}>
     <input placeholder="Message" type="text" bind:value={newMessage} />
     <button type="submit">Send</button>
   </form>

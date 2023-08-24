@@ -80,7 +80,7 @@
     display: inline-block;
     padding: 10px 20px;
     background-color: #ffa401;
-    color: #ffe;
+    color: #001;
     border: none;
     border-radius: 5px;
     cursor: pointer;

@@ -1,12 +1,11 @@
 <script lang='ts'>
   import { onMount, onDestroy, afterUpdate } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
-  export const scrollToBottom = async (node) => {
-    node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
-  }; 
+  import { createEventDispatcher } from "svelte";
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
+  let dispatch = createEventDispatcher();
 
   onMount(async () => {
     const resultList = await pb.collection('messages').getList(1, 50, {
@@ -37,8 +36,8 @@
         user: $currentUser.id,
       };
       const createdMessage = await pb.collection('messages').create(data);
-      scrollToBottom();
       newMessage = '';
+      dispatch("sent-message");
     } else {
       console.error('User not found please login or sign up');
     }

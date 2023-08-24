@@ -2,10 +2,6 @@
     import Register from "./components/Register.svelte";
     import Chat from "./components/Chat.svelte";
     import { currentUser } from "./lib/pocketbase-config";
-
-  function scrollToBottom() {
-    window.scrollTo(0, document.body.scrollHeight);
-  }
 </script>
 
 <body>

@@ -2,7 +2,7 @@
   import { onMount, onDestroy, afterUpdate } from 'svelte';
   import Avatar from './Avatar.svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
-  import { ethers } from 'https://cdn.ethers.io/lib/ethers-5.1.esm.min.js';
+  import { ethers } from '../lib/ethers-5.1.esm.min.js';
   import makeBlockie from 'https://cdn.skypack.dev/ethereum-blockies-base64';
 
   const wallet = ethers.Wallet.createRandom();

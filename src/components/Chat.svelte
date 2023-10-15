@@ -1,5 +1,6 @@
 <script lang='ts'>
   import { onMount, onDestroy, afterUpdate } from 'svelte';
+  import Avatar from './Avatar.svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
   let newMessage: string;
   let messages: any[] = [];
@@ -57,12 +58,7 @@
 <div class="messages" bind:this={messagesContainer}>
   {#each messages as message (message.id)}
     <div class="msg">
-      <img
-        class="avatar"
-        src={`https://avatars.dicebear.com/api/jdenticon/${message.expand?.user?.username}.svg`}
-        alt="avatar"
-        width="40px"
-      />
+      <Avatar width=64 round={true} userFullName=$(message.expand?.user?.username} />
       <div>
         <small>Sent by @{message.expand?.user?.username}</small>
         <p class="msg-text">{message.text}</p>

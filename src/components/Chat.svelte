@@ -59,7 +59,7 @@
     <div class="msg">
       <img
         class="avatar"
-        src={"https://api.dicebear.com/7.x/botts/jpg"}
+        src={"https://api.dicebear.com/7.x/bottts/svg"}
         alt="avatar"
         width="40px"
       />

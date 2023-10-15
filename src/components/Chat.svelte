@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { onMount, onDestroy, afterUpdate } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
   let newMessage: string;
   let messages: any[] = [];
@@ -59,7 +59,7 @@
     <div class="msg">
       <img
         class="avatar"
-        src={`"https://api.dicebear.com/7.x/identicon/svg?seed=ss"`}
+        src={`"https://api.dicebear.com/7.x/pixel-art/svg?seed=ss"`}
         alt="avatar"
         width="40px"
       />

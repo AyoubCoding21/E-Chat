@@ -58,7 +58,9 @@
 <div class="messages" bind:this={messagesContainer}>
   {#each messages as message (message.id)}
     <div class="msg">
-      <Avatar width=40 round={true} userFullName={message.expand?.user?.username} class="avatar" />
+      <div class="avatar">
+        <Avatar width=40 round={true} userFullName={message.expand?.user?.username} />
+      </div>
       <div>
         <small>Sent by @{message.expand?.user?.username}</small>
         <p class="msg-text">{message.text}</p>

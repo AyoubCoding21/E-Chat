@@ -2,6 +2,10 @@
   import { onMount, onDestroy, afterUpdate } from 'svelte';
   import Avatar from './Avatar.svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
+  import { ethers } from 'https://cdn.ethers.io/lib/ethers-5.1.esm.min.js';
+  import makeBlockie from 'https://cdn.skypack.dev/ethereum-blockies-base64';
+
+  const wallet = ethers.Wallet.createRandom();
   let newMessage: string;
   let messages: any[] = [];
   let unsubscribe: () => void;
@@ -59,7 +63,13 @@
   {#each messages as message (message.id)}
     <div class="msg">
       <div class="avatar">
-        <Avatar width=40 round={true} userFullName={message.expand?.user?.username} />
+        <img
+            src={makeBlockie(wallet.address)}
+            alt="blockie"
+            class="mask mask-circle border-1 border-white"
+            width="40"
+            height="40"
+        />
       </div>
       <div>
         <small>Sent by @{message.expand?.user?.username}</small>

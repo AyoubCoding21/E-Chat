@@ -59,7 +59,7 @@
     <div class="msg">
       <img
         class="avatar"
-        src={`"https://api.dicebear.com/7.x/identicon/svg?seed=${message.expand?.user?.username}"`}
+        src={`"https://avatars.dicebear.com/api/identicon/svg?seed=${message.expand?.user?.username}"`}
         alt="avatar"
         width="40px"
       />

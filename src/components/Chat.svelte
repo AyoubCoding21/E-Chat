@@ -1,6 +1,5 @@
 <script lang='ts'>
   import { onMount, onDestroy, afterUpdate } from 'svelte';
-  import Avatar from './Avatar.svelte';
   import { currentUser, pb } from '../lib/pocketbase-config';
   import { ethers } from '../lib/ethers-5.1.esm.min.js';
   import makeBlockie from 'https://cdn.skypack.dev/ethereum-blockies-base64';
@@ -64,7 +63,7 @@
     <div class="msg">
       <div class="avatar">
         <img
-            src={makeBlockie(wallet.address)}
+            src={makeBlockie(wallet.address + message.expand?.user?.username)}
             alt="blockie"
             class="mask mask-circle border-1 border-white"
             width="40"
@@ -86,7 +85,7 @@
 
 <style>
   /* Montserrat Font */
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
   
   /* Global Styles */
   :global(body) {
